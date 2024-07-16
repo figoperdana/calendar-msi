@@ -1,7 +1,16 @@
 {
-  "build": {
-    "env": {
-      "NODE_OPTIONS": "--legacy-peer-deps"
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
     }
-  }
+  ],
+  "env": {
+    "NODE_OPTIONS": "--legacy-peer-deps"
+  },
+  "buildCommand": "npm install --legacy-peer-deps && npm run build"
 }
