@@ -1,17 +1,35 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import { gapi } from "gapi-script";
+import { AuthProvider } from "./context/AuthProvider";  // Ensure the correct path
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const container = document.getElementById("root");
+const root = createRoot(container);
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const initClient = () => {
+  gapi.client.init({
+    apiKey: "AIzaSyDVcomcSG9hCH8frHYEctEqZgHoDOuc_Bk",
+    clientId: "909692978574-k0gfvactkcfs4qijao97euktdndvf5v7.apps.googleusercontent.com",
+    discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+    scope: "https://www.googleapis.com/auth/calendar.events",
+    cookiepolicy: 'single_host_origin'
+  }).then(() => {
+    root.render(
+      <React.StrictMode>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </React.StrictMode>
+    );
+  }, (error) => {
+    console.error("Error initializing Google API client: ", error);
+  });
+};
+
+gapi.load("client:auth2", initClient);
+
+
+
+
