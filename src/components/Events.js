@@ -101,7 +101,7 @@ return (
       <h2 className="my-4">Create Event</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group mt-3">
-          <label>Title</label>
+          <label>Judul</label>
           <input
             type="text"
             className="form-control"
