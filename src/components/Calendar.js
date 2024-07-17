@@ -8,17 +8,13 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 const localizer = momentLocalizer(moment);
 
 const Calendar = () => {
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    if (user) {
+    if (user && token) {
       const fetchEvents = async () => {
-        const auth = gapi.auth2.getAuthInstance();
-        const googleUser = auth.currentUser.get();
-        const oauthToken = googleUser.getAuthResponse().access_token;
-
-        gapi.client.setToken({ access_token: oauthToken });
+        gapi.client.setToken({ access_token: token });
 
         try {
           const response = await gapi.client.calendar.events.list({
@@ -26,6 +22,8 @@ const Calendar = () => {
             showDeleted: false,
             singleEvents: true,
             orderBy: "startTime",
+            timeMin: new Date('2024-01-01T00:00:00Z').toISOString(),
+            timeMax: new Date('2024-12-31T23:59:59Z').toISOString()
           });
 
           const fetchedEvents = response.result.items.map(event => ({
@@ -43,18 +41,21 @@ const Calendar = () => {
 
       fetchEvents();
     }
-  }, [user]);
+  }, [user, token]);
 
   return (
     <div>
-      <h2>Calendar View</h2>
-      <BigCalendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-      />
+      <h2 className="text-center mt-2">Calendar</h2>
+      <div className="container mt-5 mb-5">
+        <div className="mt-5"></div>
+        <BigCalendar
+          localizer={localizer}
+          events={events}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
+        />
+      </div>
     </div>
   );
 };

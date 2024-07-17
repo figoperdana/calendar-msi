@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import emailjs from "emailjs-com";
 
 const ExportEvents = () => {
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
   const [recipient, setRecipient] = useState("");
   const [cc, setCc] = useState("");
@@ -17,13 +17,9 @@ const ExportEvents = () => {
   const [sheetName, setSheetName] = useState("");
 
   useEffect(() => {
-    if (user) {
+    if (user && token) {
       const fetchEvents = async () => {
-        const auth = gapi.auth2.getAuthInstance();
-        const googleUser = auth.currentUser.get();
-        const oauthToken = googleUser.getAuthResponse().access_token;
-
-        gapi.client.setToken({ access_token: oauthToken });
+        gapi.client.setToken({ access_token: token });
 
         try {
           const response = await gapi.client.calendar.events.list({
@@ -31,6 +27,8 @@ const ExportEvents = () => {
             showDeleted: false,
             singleEvents: true,
             orderBy: "startTime",
+            timeMin: new Date("2024-01-01T00:00:00Z").toISOString(),
+            timeMax: new Date("2024-12-31T23:59:59Z").toISOString(),
           });
 
           const fetchedEvents = response.result.items.map(event => ({
@@ -42,6 +40,7 @@ const ExportEvents = () => {
           }));
 
           setEvents(fetchedEvents);
+          console.log("Fetched events:", fetchedEvents); // Log fetched events
         } catch (error) {
           console.error("Error fetching events: ", error);
         }
@@ -49,7 +48,7 @@ const ExportEvents = () => {
 
       fetchEvents();
     }
-  }, [user]);
+  }, [user, token]);
 
   const filterEvents = () => {
     let filteredEvents = events;
