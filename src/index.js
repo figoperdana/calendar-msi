@@ -10,8 +10,8 @@ const root = createRoot(container);
 
 const initClient = () => {
   gapi.client.init({
-    apiKey: "AIzaSyDVcomcSG9hCH8frHYEctEqZgHoDOuc_Bk",
-    clientId: "909692978574-k0gfvactkcfs4qijao97euktdndvf5v7.apps.googleusercontent.com",
+    apiKey: process.env.REACT_APP_GOOGLE_API_KEY,
+    clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
     discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
     scope: "https://www.googleapis.com/auth/calendar.events",
     cookiepolicy: 'single_host_origin'
