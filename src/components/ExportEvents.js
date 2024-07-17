@@ -210,9 +210,10 @@ const ExportEvents = () => {
             placeholder="CC Email"
           />
         </div>
-        <button type="button" className="btn btn-primary mt-3" onClick={downloadExcel}>Download Excel</button>
-        <span className="ml-3"><br/></span>
-        <button type="submit" className="btn btn-secondary mr-3 mt-3">Send Email</button>
+        <div className="d-grid gap-2 mt-3">
+          <button type="button" className="btn btn-primary mt-3" onClick={downloadExcel}>Download Excel</button>
+          <button type="submit" className="btn btn-secondary mr-3 mt-1 mb-4">Send Email</button>
+        </div>
       </form>
     </div>
   );
