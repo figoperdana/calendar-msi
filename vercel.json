@@ -9,6 +9,9 @@
       }
     }
   ],
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
   "env": {
     "NODE_OPTIONS": "--legacy-peer-deps"
   },
