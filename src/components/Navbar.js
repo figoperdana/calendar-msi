@@ -34,6 +34,9 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className="nav-link" to="/all-events">All Events</Link>
             </li>
+            <li className="nav-item">
+            <Link className="nav-link" to="/maintenance-projects">Maintenance Projects</Link>
+            </li>
           </ul>
           <div className="navbar-text ml-auto d-flex align-items-center justify-content-center">
             {user ? (
